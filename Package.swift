@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,23 +6,21 @@ import PackageDescription
 let package = Package(
     name: "SwiftLintPlugin",
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "SwiftLintPlugin",
-            targets: ["SwiftLintPlugin"]),
+        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"])
     ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
+    dependencies: [],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
+        .plugin(
             name: "SwiftLintPlugin",
-            dependencies: []),
-        .testTarget(
-            name: "SwiftLintPluginTests",
-            dependencies: ["SwiftLintPlugin"]),
+            capability: .buildTool(),
+            dependencies: [
+                .target(name: "SwiftLintBinary"),
+            ]
+        ),
+        .binaryTarget(
+            name: "SwiftLintBinary",
+            url: "https://github.com/realm/SwiftLint/releases/download/0.52.4/SwiftLintBinary-macos.artifactbundle.zip",
+            checksum: "8a8095e6235a07d00f34a9e500e7568b359f6f66a249f36d12cd846017a8c6f5"
+        )
     ]
 )
